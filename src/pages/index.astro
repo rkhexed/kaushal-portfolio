@@ -1,0 +1,182 @@
+---
+import { Image, getImage } from "astro:assets";
+import { K, hobbies, roles, emails, roll } from "../data/site.js";
+import "../styles/site.css";
+
+const files = import.meta.glob<{ default: ImageMetadata }>("../assets/photos/*.jpg", { eager: true });
+const P: Record<string, ImageMetadata> = Object.fromEntries(Object.entries(files).map(([p, m]) => [p.split("/").pop()!.replace(".jpg", ""), m.default]));
+const full = Object.fromEntries(await Promise.all(roll.map(async ([key]) => [key, (await getImage({ src: P[key], width: 1800, format: "webp" })).src])));
+const ambient = (await getImage({ src: P.dumbo, width: 48, format: "webp" })).src;
+
+const mail = `mailto:${K.links.email}`;
+const W = K.work, coops = [W[0], W[1], W[2]];
+const club = { org: "AI/ML Club", role: "President, Wilfrid Laurier University", when: K.club.when, metric: "1st", metricLabel: "AI/ML club at Laurier backed by AI faculty", body: K.club.body, tags: ["Workshops", "Research groups", "Hackathons"] };
+const track = [[W[3], "now"], ...coops.map((w) => [w, ""]), ["tag"], [club, "lead"], [W[4], "lead"]] as const;
+const notes: Record<string, string> = { keeper: "keeper", blown: "blown out, again", moon: "starburst = f/22?" };
+const ticks = Array.from({ length: 24 }, (_, i) => i);
+const title = "Kaushal Subramani, AI/ML engineer";
+const description = "AI/ML engineer in Waterloo. I build LLM agents, big or small, virtual or physical, and evaluate them rigorously. Graduating December 2026.";
+const og = new URL("/og.jpg", Astro.site ?? Astro.url).href;
+---
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={og} />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#0e141b" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Geist+Mono:wght@400;500&display=swap" />
+</head>
+<body>
+<div class="ex pf">
+  <div class="ex-loader" data-preloader style="--aw:24vw;--ay:62vh" aria-hidden="true">
+    <div class="ex-loader-logo"><p class="ex-d">Kaushal Subramani</p><span class="ex-m">43.46° N, 80.52° W</span></div>
+    <span class="ex-loader-pct ex-m">00</span><div class="ex-loader-bar"><i></i></div>
+  </div>
+  <header class="ex-ui">
+    <button class="ex-mark" type="button" aria-label="Back to the top">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="1.6" />
+        <g stroke="currentColor" stroke-width="1.6">{ticks.map((i) => <line x1="50" y1="4" x2="50" y2={i % 6 === 0 ? 12 : 8} transform={`rotate(${i * 15} 50 50)`} />)}</g>
+        <g fill="currentColor"><polygon opacity=".5" transform="rotate(45 50 50)" points="50,27 53,47 73,50 53,53 50,73 47,53 27,50 47,47" />
+        <polygon points="50,15 54.5,45.5 85,50 54.5,54.5 50,85 45.5,54.5 15,50 45.5,45.5" /></g></svg>
+    </button>
+    <nav class="ex-nav" aria-label="Sections"><a href="#ex-about">About</a><a href="#ex-work">Work</a><a href="#ex-research">Research</a><a href="#ex-built">Built</a><a href={mail}>Email me</a><span class="pf-bar" aria-hidden="true"></span><a href="#gallery" data-gallery>Gallery</a></nav>
+  </header>
+  <div class="ex-count" aria-hidden="true"><span class="ex-m ex-count-n">00</span><div class="ex-rail"><i></i></div></div>
+
+  <main class="ex-main">
+    <section class="ex-hero" data-bg="dark"><div class="ex-sticky">
+      <div class="ex-hero-bg"><div class="pf-amb" style={`background-image:url(${ambient})`}></div>
+        <Image src={P.dumbo} widths={[900, 1400, 2000]} sizes="(min-width: 992px) 100vh, 100vw" loading="eager" fetchpriority="high" alt="The Manhattan Bridge framing the Empire State Building at golden hour, from Washington Street in Brooklyn" /></div>
+      <div class="ex-hero-shade"></div>
+      <div class="ex-hero-copy"><h1 class="ex-d">Kaushal<br />Subramani</h1>
+        <p class="ex-hero-line">AI/ML engineer. I build LLM agents, big or small, virtual or physical, and I'm rigorous about evaluating them. My best work happens on teams that have fun doing it.</p>
+        <div class="ex-cta"><a class="ex-btn" href="#ex-work" data-jump>See my work</a><a class="ex-btn ghost" href={mail}>Email me</a></div></div>
+      <p class="ex-exif ex-m">Washington St, Brooklyn<br />{K.exif.dumbo}</p>
+      <div class="ex-hero-fade"></div>
+    </div></section>
+
+    <section class="ex-spread ex-light" data-bg="light"><div class="ex-sticky">
+      <p class="ex-d ex-spread-line"><span>Agents, evals</span><span>and edge models</span></p>
+      <p class="ex-spread-sub" data-reveal="ctn">Three co-ops shipping LLM systems, a research lab, and a hackathon platform that 200 people used.</p>
+    </div></section>
+
+    <section class="ex-home" id="ex-about" data-bg="dark"><div class="ex-home-grid">
+      <figure class="ex-frame ex-home-photo"><Image data-parallax="img" src={P.portrait} widths={[600, 1000]} sizes="(min-width: 992px) 40vw, 100vw" alt="Portrait of Kaushal in low side light" /></figure>
+      <div class="ex-home-copy" data-reveal-w>
+        <p class="ex-kicker ex-m">{K.home}</p>
+        <h2 class="ex-d" data-reveal="h">Hi, I'm Kaushal.</h2>
+        <p data-reveal="p">{K.intro}</p>
+        <dl class="ex-facts" data-reveal="ctn"><div><dt>Studying</dt><dd>Honours BSc Computer Science, co-op, Big Data concentration, Laurier</dd></div><div><dt>Graduating</dt><dd>December 2026</dd></div><div><dt>Leading</dt><dd>{K.club.title}</dd></div></dl>
+      </div></div></section>
+
+    <section class="ex-work ex-light" id="ex-work" data-bg="light"><div class="ex-work-area"><div class="ex-work-screen"><div class="ex-track">
+      <div class="ex-track-title"><h2 class="ex-d"><span>Where I've</span><span>worked</span></h2></div>
+      <span class="pf-line" aria-hidden="true"><i></i></span>
+      {track.map(([w, kind]) => w === "tag"
+        ? <p class="pf-now-tag ex-m">Projects and leadership I'm proud of</p>
+        : <article class={`ex-card ${kind}`} data-card><span class="pf-node" aria-hidden="true"></span>{kind === "now" && <span class="pf-now ex-m">Now</span>}
+            <p class="ex-m">{w.when}</p><h3>{w.org}</h3><p class="role">{w.role}</p>
+            <div class="ex-metric"><b>{w.metric}</b><span>{w.metricLabel}</span></div>
+            <p>{w.body}</p><ul class="ex-tags">{w.tags.map((t) => <li>{t}</li>)}</ul>
+          </article>)}
+    </div></div></div></section>
+
+    <section class="pf-sec pf-research" id="ex-research" data-bg="dark"><div class="pf-in">
+      <header class="pf-head" data-reveal-w><h2 class="ex-d" data-reveal="h">Research</h2><p data-reveal="ctn">Three projects, each running live. Click and drag inside the boxes.</p></header>
+      <div class="pf-demos">
+        <article class="pf-demo"><p class="ex-m">Jun 2026 to now</p><h3>Drone swarms that fly on quantum circuits</h3>
+          <div class="pf-box pf-grid"><canvas class="pf-swarm" aria-label="Simulated quadrotors flying to their goals while avoiding moving pillars and each other"></canvas>
+            <div class="pf-seg" role="group" aria-label="Swarm size"><span class="ex-m">Drones</span>{[1, 2, 3, 4].map((n) => <button type="button" data-n={n} aria-pressed={String(n === 4)}>{n}</button>)}</div>
+            <p class="pf-read ex-m" data-sw>4 drones</p></div>
+          <p class="pf-cap">A browser stand-in for the PyBullet environment: up to four quadrotors, each steering around moving pillars and each other on its own. The research trains a quantum-circuit policy for this; the demo steers with simple potential fields.</p></article>
+        <article class="pf-demo"><p class="ex-m">May to Sep 2026</p><h3>Semantic RRT* that plans around people in ROS2</h3>
+          <div class="pf-box pf-grid"><canvas class="pf-rrt" aria-label="A live RRT* planner. Click to move the goal."></canvas><p class="pf-read ex-m"><span data-rr="n">nodes 0</span><span data-rr="p">searching</span></p></div>
+          <p class="pf-cap">Anytime RRT* growing live. The path gives the person room and keeps getting shorter. Click to move the goal.</p></article>
+        <article class="pf-demo"><p class="ex-m">IEEE, 2026</p><h3>A multi-agent system that quarantines phishing</h3>
+          <div class="pf-box pf-mail">
+            <div class="pf-picks" role="tablist" aria-label="Sample emails">{emails.map((e, i) => <button type="button" role="tab" aria-selected={String(i === 1)} data-mail={i}>{e.label}</button>)}</div>
+            <p class="pf-msg ex-m"><span data-m="from"></span><b data-m="subj"></b></p>
+            <ol class="pf-agents">{["Content agent (BERT)", "Sender agent (WHOIS)", "Threat intel agent"].map((a, i) => <li><span>{a}</span><i><b data-a={i}></b></i><em data-av={i}></em></li>)}
+              <li class="pf-coord"><span>Coordination agent</span><i><b data-a="3"></b></i><em data-av="3"></em></li>
+              <li class="pf-verdict"><span>Decision</span><strong data-verdict></strong></li></ol>
+          </div>
+          <p class="pf-cap">Scripted walkthrough with made-up scores: three agents analyze in parallel, the coordination agent fuses their confidence and decides. The real system reached 84.1% zero-shot detection.</p></article>
+      </div>
+      <div class="ex-rz-list pf-papers">{K.research.map((r) =>
+        <article class="ex-paper"><p class="ex-m">{r.venue ? r.venue + ", 2026" : r.when}</p><h3>{r.title}</h3>
+          <div class="ex-nums">{r.metrics.map(([n, l]) => <div><b>{n}</b><span>{l}</span></div>)}</div>
+          <p>{r.body}</p><p><a href={K.links[r.link]} target="_blank" rel="noopener">{r.linkLabel}</a></p></article>)}</div>
+    </div></section>
+
+    <section class="pf-sec ex-light" id="ex-built" data-bg="light"><div class="pf-in">
+      <header class="pf-head" data-reveal-w><h2 class="ex-d" data-reveal="h">Built</h2><p data-reveal="ctn">Things I made because I wanted them to exist.</p></header>
+      <div class="pf-built">{K.projects.map((p) =>
+        <article class="pf-proj"><p class="ex-m">{p.tags.join(" · ")}</p><h3>{p.title}</h3><p>{p.body}</p><a href={K.links[p.link]} target="_blank" rel="noopener">{p.linkLabel}</a></article>)}
+        <article class="pf-proj pf-more"><p class="ex-m">Side projects, hackathons, experiments</p><h3>And plenty more</h3><p>Everything else I build lives on my GitHub.</p><a href={K.links.github} target="_blank" rel="noopener">github.com/rkhexed</a></article></div>
+    </div></section>
+
+    <section class="pf-aurora" data-bg="dark">
+      <figure class="ex-frame pf-au1"><Image data-parallax="img" src={P.aurArc} widths={[800, 1400]} sizes="(min-width: 992px) 58vw, 100vw" alt="A green aurora arc over black spruce outside Yellowknife" /></figure>
+      <figure class="ex-frame pf-au2"><Image data-parallax="img" src={P.aurSweep} widths={[600, 1000]} sizes="42vw" alt="An aurora band sweeping up from a frozen lake" /></figure>
+      <p class="pf-au-cap" data-reveal-w><span class="ex-m" data-reveal="ctn">Yellowknife, January 2026</span><span class="ex-d" data-reveal="h">A dream, crossed off.</span></p>
+    </section>
+
+    <section class="pf-sec ex-light" id="ex-life" data-bg="light"><div class="pf-in">
+      <header class="pf-head" data-reveal-w><h2 class="ex-d" data-reveal="h">Off the clock</h2><p data-reveal="ctn">What I do when I'm not training models.</p></header>
+      <div class="ex-off-in">
+        <div><ul class="ex-hobbies" data-reveal-w>{hobbies.map(([h, j]) => <li data-reveal="ctn"><b>{h}</b><span>{j}</span></li>)}</ul>
+          <a class="pf-gal-link" href="#gallery" data-gallery>See the photo roll</a></div>
+        <div class="ex-stack">
+          <figure class="ex-frame t"><Image data-parallax="img" src={P.timesSq} widths={[400, 800]} sizes="(min-width: 992px) 17vw, 50vw" alt="Times Square at night, crowded and lit up" /></figure>
+          <figure class="ex-frame t"><Image data-parallax="img" src={P.ubcBear} widths={[400, 800]} sizes="(min-width: 992px) 17vw, 50vw" alt="Kaushal grinning with a UBC teddy bear" /></figure>
+          <figure class="ex-frame w"><Image data-parallax="img" src={P.vanChair} widths={[600, 1100]} sizes="(min-width: 992px) 34vw, 100vw" alt="Two sandwiches held up on the Grouse Mountain chairlift above Vancouver" /></figure>
+        </div></div></div></section>
+
+    <section class="ex-end pf-end" data-bg="dark"><div class="pf-end-stick">
+      <div class="ex-end-bg"><Image data-parallax="img" src={P.homeNight} widths={[900, 1600]} sizes="100vw" alt="" /></div>
+      <div class="ex-end-copy" data-reveal-w><h2 class="ex-d pf-hire" data-reveal="ctn">Hiring <span class="pf-role">{roles[0]}</span><i class="pf-caret" aria-hidden="true"></i></h2>
+        <div class="pf-meter" aria-hidden="true"><span class="ex-m" data-rc>01 / 0{roles.length}</span>{roles.map(() => <i><b></b></i>)}</div>
+        <p class="pf-end-sub" data-reveal="p">I graduate in December 2026 and I'm looking for full-time roles and internships.</p>
+        <a class="ex-email" href={mail} data-reveal="ctn">{K.links.email}</a></div>
+    </div></section>
+  </main>
+  <div class="ex-spacer" data-bg="dark" aria-hidden="true"></div>
+  <footer class="ex-foot"><div class="pf-foot-in"><div class="ex-pass">
+    <div class="ex-pass-main">
+      <div class="route"><span class="ex-d">KKS</span><i></i><span class="ex-d">YOU</span></div>
+      <div class="ex-pass-row"><div><p class="lbl">PASSENGER</p><div class="v">{K.fullName}</div></div><div><p class="lbl">FLIGHT</p><div class="v">AI/ML engineer</div></div><div><p class="lbl">BOARDING</p><div class="v">Graduating Dec 2026</div></div></div>
+      <p class="ex-pass-note">Every photo on this page is from my own trips, and there are so many more places I hope to see.</p>
+    </div>
+    <div class="ex-pass-stub"><div class="ex-pass-links"><a href={mail}>Email me</a><a href={K.links.github} target="_blank" rel="noopener">GitHub</a><a href={K.links.linkedin} target="_blank" rel="noopener">LinkedIn</a><a href={K.links.resume} target="_blank" rel="noopener">Resume (PDF)</a></div><span class="ex-m">WATERLOO, ON</span></div>
+  </div><a class="pf-foot-gal" href="#gallery" data-gallery>Photo roll, 2026</a></div></footer>
+
+  <div class="pf-gallery" hidden>
+    <div class="cs pf-gal-in">
+      <a class="pf-back" href="#top" data-back>Back to portfolio</a>
+      <header class="cs-top"><div class="cs-id"><h2>Photo roll</h2><p>Learning photography, one blown highlight at a time. New rolls get added each year.</p></div></header>
+      <section class="cs-sheet-wrap"><div class="cs-sheet">
+        <p class="cs-head"><span class="cs-pen">Roll 01 · 2026</span><span class="cs-mono">Hover to inspect, click to develop</span></p>
+        <div class="cs-grid">{roll.map(([key, t, where, story, mk], i) =>
+          <button class={`cs-frame ${mk ?? ""}`} type="button" aria-label={`Develop: ${t}`} data-title={t} data-where={where} data-story={story} data-full={full[key]}>
+            <span class="cs-img"><Image src={P[key]} widths={[360, 640]} sizes="(min-width: 900px) 16vw, 33vw" loading="lazy" alt="" /></span><span class="cs-edge"><b>{i * 2 + 1}</b><span>{i * 2 + 1}A</span></span>
+            {mk && <><svg class="cs-mark" viewBox="0 0 100 70" preserveAspectRatio="none" aria-hidden="true"><path d="M50 4 C80 3 97 16 96 35 C95 56 72 67 47 66 C20 65 3 53 4 33 C5 14 26 5 56 7" /></svg><span class="cs-note">{notes[mk]}</span></>}
+          </button>)}</div>
+      </div><div class="cs-loupe" aria-hidden="true"></div></section>
+      <div class="cs-tray" role="dialog" aria-modal="true" aria-label="Developing print" hidden>
+        <div class="cs-tray-in"><div class="cs-tray-print"><img alt="" /></div>
+          <div class="cs-tray-copy"><p class="cs-mono" data-t="where"></p><h2 data-t="title"></h2><p data-t="story"></p><button class="cs-close" type="button">Back to the sheet</button></div></div></div>
+    </div>
+  </div>
+</div>
+<script src="../scripts/site.js"></script>
+</body>
+</html>
