@@ -486,3 +486,7 @@ img { max-width: 100%; }
 .pf-end .ex-end-bg img { opacity: .62; }
 .pf-hire, .pf-end-sub, .pf .ex-email { text-shadow: 0 2px 18px rgba(14,20,27,.55); }
 .pf-meter .ex-m { color: #cfd6d2; }
+
+/* the role reads as a label under the name, not as the first words of the sentence */
+.pf-role-tag { margin: -8px 0 2px; font: 500 clamp(13px, 1.05vw, 15px)/1 "Geist Mono", ui-monospace, monospace;
+  letter-spacing: .18em; text-transform: uppercase; color: var(--glow); }
