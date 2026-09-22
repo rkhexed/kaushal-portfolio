@@ -1,0 +1,38 @@
+# Kaushal Kumar Subramani
+
+> AI/ML engineer in Waterloo, Ontario. Builds LLM agents, the evaluation systems that test them, and small models that run on-device. Graduating with an Honours BSc in Computer Science (co-op, Big Data concentration) from Wilfrid Laurier University in December 2026, and looking for full-time roles and internships.
+
+Contact: kaushalkmrgr8@gmail.com
+Site: https://kaushalks.com
+GitHub: https://github.com/rkhexed
+LinkedIn: https://www.linkedin.com/in/kaushal-subramani-040a22224/
+Resume (PDF): https://kaushalks.com/Kaushal-Subramani-Resume.pdf
+
+## Current
+
+- Quantum Machine Learning Research Assistant, Wilfrid Laurier University (June 2026 to present). Replaced a DQN's classical value network with a parameterized quantum circuit as the Q-function approximator inside a multi-agent reinforcement learning framework for decentralized multi-drone navigation, and benchmarked returns and trainable parameter counts against the classical baseline.
+- President, AI/ML Club at Wilfrid Laurier University (January 2026 to present). The university's first AI/ML club backed by AI faculty: project teams, workshops, research groups and hackathon teams.
+
+## Industry experience
+
+- AI/ML Software Engineer, co-op, Kinara Systems (January to April 2026). Fine-tuned and benchmarked Qwen 2.5 3B on edge hardware, improving log classification 10% over baseline while keeping customer data on-device; built a self-hosted OpenAI-compatible inference service so local models drop into existing LLM workflows; rebuilt the knowledge ingestion pipeline with semantic chunking into Qdrant.
+- Machine Learning Engineer, co-op, Dawson Partners (May to August 2025). Built a LangSmith evaluation system that invokes LangGraph agents in parallel, raising output reliability 33% on time-sensitive financial calculations; deployed the team's first custom MCP Excel server on GCP Cloud Run with Terraform.
+- Junior ML/AI Engineer, co-op, IGS (September to December 2024). Raised RAG accuracy 13% and ROUGE 6% with an auto-tester that scores retrieval quality; reached 80% accuracy classifying user stories across domains and stacks.
+- VP of Technology, [case]HACKS (September 2025 to May 2026). Shipped the platform a 200+ hacker event ran on: organizer control plane, participant portal, constraint-based team matching, realtime QR check-in and a sponsor dashboard.
+
+## Research
+
+- LLM-guided semantic path planning for ROS2 Nav2. Ran a research RRT* planner as a drop-in Nav2 global planner, embedded a class-conditioned semantic cost at every RRT* cost site, and converted it to anytime RRT* after diagnosing that first-solution termination silently disabled rewiring. Against Nav2's NavFn baseline: 2 to 7% shorter paths, 97% goal reach, zero collisions. Code: https://github.com/rkhexed/SPIN---quadhrrt_nav
+- Multi-Agent Email Security System, 23rd L&T Conference, IEEE, 2026. 84.1% zero-shot phishing detection. Three analysis agents (BERT classification, WHOIS validation, threat intelligence) run in parallel on dedicated Mistral-small instances, and a coordination agent fuses their confidence to quarantine or deliver. Paper: https://ieeexplore.ieee.org/abstract/document/11592564
+
+## Skills
+
+Languages: Python, SQL, TypeScript, JavaScript, Java, C.
+AI/ML: PyTorch, Hugging Face Transformers, scikit-learn, LoRA/PEFT fine-tuning, quantization.
+LLM and agents: LangChain, LangGraph, LangSmith, CrewAI, MCP, n8n, RAG, model evaluation and benchmarking.
+Data: Qdrant, Milvus, Postgres, Supabase, MongoDB, Neo4j.
+Infrastructure and web: Docker, GCP Cloud Run, Terraform, FastAPI, Flask, React, Next.js, Astro.
+
+## About this site
+
+Static site built with Astro, GSAP and Lenis. The research section runs three live browser demos: a quadrotor swarm avoiding moving obstacles, an anytime RRT* planner, and a walkthrough of the multi-agent phishing pipeline. The swarm demo steers with potential fields as a stand-in for the trained policy, and the phishing walkthrough uses illustrative scores; both say so on the page.

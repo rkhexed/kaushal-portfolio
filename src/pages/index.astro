@@ -20,6 +20,24 @@ const barcode = [...K.fullName.replace(/ /g, "")].flatMap((c) => { const n = c.c
 const title = "Kaushal Subramani, AI/ML engineer";
 const description = "AI/ML engineer in Waterloo. I build LLM agents, big or small, virtual or physical, and evaluate them rigorously. Graduating December 2026.";
 const og = new URL("/og.jpg", Astro.site ?? Astro.url).href;
+/* structured data: how search engines and AI crawlers read the profile */
+const person = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: K.fullName,
+  alternateName: "Kaushal Subramani",
+  url: "https://kaushalks.com",
+  image: og,
+  email: `mailto:${K.links.email}`,
+  jobTitle: "AI/ML Engineer",
+  description,
+  address: { "@type": "PostalAddress", addressLocality: "Waterloo", addressRegion: "ON", addressCountry: "CA" },
+  alumniOf: { "@type": "CollegeOrUniversity", name: "Wilfrid Laurier University" },
+  worksFor: { "@type": "CollegeOrUniversity", name: "Wilfrid Laurier University" },
+  knowsAbout: ["LLM agents", "Model evaluation", "Retrieval-augmented generation", "On-device and edge models", "Quantum machine learning", "Reinforcement learning", "Path planning", "ROS2 Nav2", "PyTorch", "LangGraph", "LangSmith", "MCP", "Python"],
+  sameAs: [K.links.github, K.links.linkedin, K.links.paper],
+  seeks: { "@type": "Demand", name: "Full-time AI/ML engineering roles and internships from December 2026" }
+};
 ---
 <html lang="en">
 <head>
@@ -33,6 +51,7 @@ const og = new URL("/og.jpg", Astro.site ?? Astro.url).href;
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="theme-color" content="#0e141b" />
+  <script type="application/ld+json" set:html={JSON.stringify(person)}></script>
   <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site ?? Astro.url).href} />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />

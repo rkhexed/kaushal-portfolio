@@ -1,0 +1,7 @@
+# Everyone is welcome, including AI crawlers and assistants.
+User-agent: *
+Allow: /
+
+Sitemap: https://kaushalks.com/sitemap.xml
+
+# Short, structured summary for language models: https://kaushalks.com/llms.txt
