@@ -26,7 +26,7 @@ export const K = {
     { org: "IGS", role: "Junior ML/AI Engineer, co-op", when: "Sep to Dec 2024", metric: "+13%", metricLabel: "RAG accuracy from an auto-tester I wrote",
       body: "Wrote an auto-tester that scores retrieval quality, which lifted RAG accuracy 13% and ROUGE 6%, then reached 80% accuracy classifying user stories across domains and stacks.",
       tags: ["RAG", "ROUGE", "Hugging Face"] },
-    { org: "Wilfrid Laurier University", role: "Quantum ML Research Assistant", when: "Jun 2026 to now", metric: "PQC", metricLabel: "as the Q-function for multi-drone navigation",
+    { org: "Wilfrid Laurier University", role: "Quantum ML Research Assistant", when: "Jun 2026 to present", metric: "PQC", metricLabel: "as the Q-function for multi-drone navigation",
       body: "Swapping a DQN's classical value network for a parameterized quantum circuit in a multi-agent framework for decentralized drone navigation, and benchmarking returns and parameter counts against the classical baseline.",
       tags: ["Quantum ML", "MARL", "DQN"] },
     { org: "[case]HACKS", role: "VP of Technology", when: "Sep 2025 to May 2026", metric: "200+", metricLabel: "hackers ran on the platform I shipped",
@@ -47,7 +47,7 @@ export const K = {
     { title: "[case]HACKS platform", body: "Organizer dashboard and hacker portal for a 200+ person hackathon, open-sourced after the event.",
       tags: ["Next.js", "Supabase", "Flask"], link: "casehacks", linkLabel: "Showcase repo" }
   ],
-  club: { title: "President, AI/ML Club at Laurier", when: "Jan 2026 to now",
+  club: { title: "President, AI/ML Club at Laurier", when: "Jan 2026 to present",
     body: "The university's first AI/ML club backed by AI faculty: project teams, workshops that bring first-years into the field, research groups and hackathon teams." },
   exif: { dumbo: "Sony a6000, 25 mm, 1/640 s, f/4, ISO 100" },
 };

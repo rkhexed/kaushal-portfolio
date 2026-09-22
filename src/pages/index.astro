@@ -71,7 +71,7 @@ const person = {
         <g fill="currentColor"><polygon opacity=".5" transform="rotate(45 50 50)" points="50,27 53,47 73,50 53,53 50,73 47,53 27,50 47,47" />
         <polygon points="50,15 54.5,45.5 85,50 54.5,54.5 50,85 45.5,54.5 15,50 45.5,45.5" /></g></svg>
     </button>
-    <nav class="ex-nav" aria-label="Sections"><a href="#ex-about">About</a><a href="#ex-work">Work</a><a href="#ex-research">Research</a><a href="#ex-built">Built</a><a href={mail}>Email me</a>{/* gallery hidden for now: <span class="pf-bar" aria-hidden="true"></span><a href="#gallery" data-gallery>Gallery</a> */}</nav>
+    <nav class="ex-nav" aria-label="Sections"><a href="#ex-about">About</a><a href="#ex-work">Work</a><a href="#ex-research">Research</a><a href="#ex-built">Projects</a><a href={mail}>Email me</a>{/* gallery hidden for now: <span class="pf-bar" aria-hidden="true"></span><a href="#gallery" data-gallery>Gallery</a> */}</nav>
   </header>
   <div class="ex-count" aria-hidden="true"><span class="ex-m ex-count-n">00</span><div class="ex-rail"><i></i></div></div>
 
@@ -116,7 +116,7 @@ const person = {
     <section class="pf-sec pf-research" id="ex-research" data-bg="dark"><div class="pf-in">
       <header class="pf-head" data-reveal-w><h2 class="ex-d" data-reveal="h">Research</h2><p data-reveal="ctn">Three projects, each running live. Click and drag inside the boxes.</p></header>
       <div class="pf-demos">
-        <article class="pf-demo"><p class="ex-m">Jun 2026 to now</p><h3>Drone swarms that fly on quantum circuits</h3>
+        <article class="pf-demo"><p class="ex-m">Jun 2026 to present</p><h3>Drone swarms that fly on quantum circuits</h3>
           <div class="pf-box pf-grid"><canvas class="pf-swarm" aria-label="Simulated quadrotors flying to their goals while avoiding moving pillars and each other"></canvas>
             <div class="pf-seg" role="group" aria-label="Swarm size"><span class="ex-m">Drones</span>{[1, 2, 3, 4].map((n) => <button type="button" data-n={n} aria-pressed={String(n === 4)}>{n}</button>)}</div>
             <p class="pf-read ex-m" data-sw>4 drones</p></div>

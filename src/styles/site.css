@@ -174,7 +174,7 @@ img { max-width: 100%; }
 
 /* ================= portfolio layer (Planner structure, demos, hiring, gallery) ================= */
 .ex.pf { --glow: #ff7a55; --sig: #e0482a; --paperG: #eef2f1; --inkG: #18222e; }
-@media (min-width: 992px) { .pf .ex-hero { height: 220vh; } .pf .ex-spread { height: 160vh; } }
+@media (min-width: 992px) { .pf .ex-hero { height: 220vh; } .pf .ex-spread { height: 115vh; } }
 .pf-bar { width: 1.5px; height: 16px; background: currentColor; opacity: .45; align-self: center; }
 .pf .ex-nav { align-items: center; }
 
@@ -479,3 +479,10 @@ img { max-width: 100%; }
 .pf-copy.stub:hover { background: transparent; color: var(--sig); }
 .pf-copy.stub.done { background: transparent; border-color: rgba(14,20,27,.12); color: var(--sig); }
 .pf-copy.stub.done::after { content: "\2713"; }
+
+/* the closing photo is city lights at night: deepen the scrim so the type stays legible */
+.pf-end .ex-end-bg::after { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(14,20,27,.45) 0%, rgba(14,20,27,.6) 40%, rgba(14,20,27,.88) 100%); }
+.pf-end .ex-end-bg img { opacity: .62; }
+.pf-hire, .pf-end-sub, .pf .ex-email { text-shadow: 0 2px 18px rgba(14,20,27,.55); }
+.pf-meter .ex-m { color: #cfd6d2; }
