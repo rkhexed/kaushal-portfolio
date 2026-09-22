@@ -387,3 +387,82 @@ img { max-width: 100%; }
   .cs-tray-in { grid-template-columns: 1fr; gap: 16px; overflow-y: auto; }
 }
 @media (prefers-reduced-motion: reduce) { .cs-tray.dev .cs-tray-print img { animation: none; }  }
+
+/* ================= feedback round 1 ================= */
+.pf .ex-hero-line { line-height: 1.3; }
+
+/* hairline edge so dark photos on dark ground (and bright ones on light) keep their shape */
+.pf .ex-frame { outline: 1px solid rgba(238,241,236,.16); outline-offset: -1px; }
+.pf .ex-light .ex-frame { outline-color: rgba(14,20,27,.16); }
+
+/* work track: "Now" sits above the first node, clear of the line */
+.pf-now { left: 22px; top: -84px; }
+
+/* the keep-scrolling hint at the start of the track */
+.pf-hint { display: flex; align-items: center; gap: 14px; margin: 8px 0 0; font: 500 13px/1.4 "Geist Mono", ui-monospace, monospace; color: var(--sig); transition: opacity .4s; }
+.pf-hint i { position: relative; flex: 0 0 auto; width: 2px; height: 56px; background: rgba(224,72,42,.25); overflow: hidden; border-radius: 2px; }
+.pf-hint i::after { content: ""; position: absolute; left: 0; top: -40%; width: 100%; height: 40%; background: var(--sig); animation: pf-drip 1.6s cubic-bezier(.5,0,.5,1) infinite; }
+.pf-hint.gone { opacity: 0; }
+@keyframes pf-drip { to { top: 100%; } }
+@media (prefers-reduced-motion: reduce) { .pf-hint i::after { animation: none; top: 30%; } }
+
+/* divider between roles and leadership: upright and readable */
+.pf-divider { flex: 0 0 auto; width: 300px; align-self: center; display: grid; gap: 12px; padding-left: 22px; border-left: 3px solid var(--sig); }
+.pf-divider .ex-m { color: var(--sig); font-size: 13px; }
+.pf-divider h3 { margin: 0; font-size: 44px; line-height: .95; color: var(--ink); }
+
+/* built */
+.pf-built { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
+.pf-facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: 8px 0 4px; padding-top: 16px; border-top: 1px solid rgba(14,20,27,.12); }
+.pf-facts dt { font: 800 clamp(26px, 2.4vw, 36px)/1 "Bricolage Grotesque", ui-sans-serif, sans-serif; letter-spacing: -.03em; color: var(--sig); }
+.pf-facts dd { margin: 6px 0 0; font-size: 13.5px; line-height: 1.35; color: var(--muteL); }
+.pf-more-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; font-size: 16.5px; color: #26303a; }
+.pf-more-list li { padding-left: 18px; position: relative; }
+.pf-more-list li::before { content: ""; position: absolute; left: 0; top: .6em; width: 8px; height: 2px; background: var(--sig); }
+
+/* boarding pass: real pass anatomy (header band, city pair, fields, stub, barcode) */
+.pf .ex-pass { width: min(900px, 100%); grid-template-columns: minmax(0, 1fr) 230px; box-shadow: 0 50px 90px -40px rgba(0,0,0,.8); }
+.pf .ex-pass-main { gap: 22px; padding: 0 30px 26px; }
+.pf-pass-top, .pf-stub-top { display: flex; justify-content: space-between; gap: 12px; padding: 13px 30px; margin: 0 -30px; font: 600 11.5px/1 "Geist Mono", ui-monospace, monospace; letter-spacing: .12em; text-transform: uppercase; }
+.pf-pass-top { background: var(--sig); color: #fff; }
+.pf-stub-top { background: var(--ink); color: var(--snow); margin: 0 -22px; padding: 13px 22px; }
+.pf .ex-pass .route { align-items: flex-start; gap: 18px; }
+.pf .ex-pass .route .pt { display: grid; gap: 6px; }
+.pf .ex-pass .route .to { text-align: right; }
+.pf .ex-pass .route small { font-size: 12.5px; line-height: 1.35; color: var(--muteL); }
+.pf .ex-pass .route i { position: relative; align-self: center; margin-top: -24px; height: 2px; background: repeating-linear-gradient(90deg, rgba(14,20,27,.5) 0 7px, transparent 7px 13px); }
+.pf .ex-pass .route i svg { position: absolute; left: 50%; top: 50%; width: 26px; height: 26px; transform: translate(-50%, -50%); fill: var(--ink); background: var(--snow); padding: 0 4px; box-sizing: content-box; }
+.pf .ex-pass-row { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px 18px; padding-top: 18px; border-top: 1px solid rgba(14,20,27,.12); }
+.pf .ex-pass-row .wide { grid-column: 1 / -1; }
+.pf .ex-pass .lbl { margin: 0 0 6px; font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; }
+.pf .ex-pass .v { font-size: 15.5px; font-weight: 700; line-height: 1.3; }
+.pf .ex-pass-stub { position: relative; padding: 0 22px 22px; align-content: start; gap: 18px; }
+.pf .ex-pass-stub::before, .pf .ex-pass-stub::after { content: ""; position: absolute; left: -11px; width: 20px; height: 20px; border-radius: 50%; background: var(--ink2); }
+.pf .ex-pass-stub::before { top: -10px; } .pf .ex-pass-stub::after { bottom: -10px; }
+.pf .ex-pass-links { gap: 2px; }
+.pf .ex-pass-links a { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid rgba(14,20,27,.12); text-decoration: none; font-size: 15px; }
+.pf .ex-pass-links a::after { content: "\2192"; color: var(--sig); }
+.pf .ex-pass-links a:hover { color: var(--sig); }
+.pf-barcode { display: flex; align-items: stretch; gap: 2px; height: 44px; margin-top: 4px; }
+.pf-barcode i { width: var(--w); background: var(--ink); }
+.pf .ex-pass-note { font-size: 12.5px; }
+
+@media (max-width: 991px) {
+  .pf-hint { display: none; }
+  .pf-divider { width: 100%; padding: 8px 0 8px 18px; }
+  .pf-divider h3 { font-size: 34px; }
+  .pf-built { grid-template-columns: 1fr; }
+  .pf-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pf .ex-pass { grid-template-columns: 1fr; }
+  .pf .ex-pass-stub { border-top: 2px dashed rgba(14,20,27,.25); }
+  .pf .ex-pass-stub::before, .pf .ex-pass-stub::after { top: -11px; bottom: auto; }
+  .pf .ex-pass-stub::before { left: -11px; } .pf .ex-pass-stub::after { left: auto; right: -11px; }
+  .pf-stub-top, .pf-barcode { display: none; }
+  .pf .ex-pass-stub { padding-top: 12px; }
+  .pf .ex-pass-row { grid-template-columns: 1fr 1fr; }
+  .pf .ex-pass-row .wide, .pf .ex-pass-note { display: none; }
+  .pf .ex-pass .route .ex-d { font-size: 44px; }
+  .pf-pass-top span:last-child { display: none; }
+}
+.pf .ex-track-title .pf-hint { color: var(--sig); max-width: none; font-size: 14px; }
+.pf-hint i { height: 72px; }

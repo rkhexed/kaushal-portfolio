@@ -29,8 +29,8 @@ export const K = {
     { org: "Wilfrid Laurier University", role: "Quantum ML Research Assistant", when: "Jun 2026 to now", metric: "PQC", metricLabel: "as the Q-function for multi-drone navigation",
       body: "Swapping a DQN's classical value network for a parameterized quantum circuit in a multi-agent framework for decentralized drone navigation, and benchmarking returns and parameter counts against the classical baseline.",
       tags: ["Quantum ML", "MARL", "DQN"] },
-    { org: "[case]HACKS", role: "VP of Technology", when: "Sep 2025 to May 2026", metric: "200", metricLabel: "hackers ran on the platform I shipped",
-      body: "Shipped the organizer control plane and the participant portal for a 200-hacker event: constraint-based team matching, realtime QR check-in and a sponsor dashboard.",
+    { org: "[case]HACKS", role: "VP of Technology", when: "Sep 2025 to May 2026", metric: "200+", metricLabel: "hackers ran on the platform I shipped",
+      body: "Shipped the organizer control plane and the participant portal for a 200+ hacker event: constraint-based team matching, realtime QR check-in and a sponsor dashboard.",
       tags: ["Next.js", "Supabase", "Flask", "React"] }
   ],
   research: [
@@ -44,7 +44,7 @@ export const K = {
       linkLabel: "Read the paper", link: "paper" }
   ],
   projects: [
-    { title: "[case]HACKS platform", body: "Organizer dashboard and hacker portal for a 200-person hackathon, open-sourced after the event.",
+    { title: "[case]HACKS platform", body: "Organizer dashboard and hacker portal for a 200+ person hackathon, open-sourced after the event.",
       tags: ["Next.js", "Supabase", "Flask"], link: "casehacks", linkLabel: "Showcase repo" }
   ],
   club: { title: "President, AI/ML Club at Laurier", when: "Jan 2026 to now",
@@ -56,7 +56,7 @@ export const hobbies = [
   ["Badminton", "I play often and lose gracefully."],
   ["Bouldering", "Currently dreaming of getting halfway up a V3."],
   ["Drone flying", "A DJI Mini 3, a birthday gift I fly every chance I get."],
-  ["Photography", "Learning on a Canon Rebel T6i, one blown highlight at a time."],
+  ["Photography", "Learning on a Canon Rebel T6i. Every shot looked better in my head."],
   ["Video games", "Pok\u00e9mon Emerald, Horizon Zero Dawn, Expedition 33, God of War."]
 ];
 

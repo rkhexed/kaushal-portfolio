@@ -19,7 +19,8 @@ const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
 /* Lenis driven by the GSAP ticker, so there is one animation loop */
 function makeLenis() {
   if (RM) return null;
-  const lenis = new Lenis({ duration: 1.2, smoothWheel: true, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+  /* gestureOrientation "both": a sideways trackpad swipe still moves the page (people try that in the work track) */
+  const lenis = new Lenis({ duration: 1.2, smoothWheel: true, gestureOrientation: "both", easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
   lenis.on("scroll", ScrollTrigger.update);
   gsap.ticker.add((t) => lenis.raf(t * 1000));
   gsap.ticker.lagSmoothing(0);
@@ -54,7 +55,8 @@ function init() {
     offs.push(demoRRT($(".pf-rrt"), $('[data-rr="n"]'), $('[data-rr="p"]')));
     offs.push(demoSwarm(el));
     offs.push(demoMail(el, emails));
-    offs.push(gallery(el, $(".pf-gallery"), lenis));
+    // gallery hidden for now (markup commented out in index.astro); restore with:
+    // offs.push(gallery(el, $(".pf-gallery"), lenis));
 
     if (RM) { $(".ex-loader").remove(); return () => { offs.forEach((f) => f()); lenis && lenis.destroy(); }; }
 
@@ -161,6 +163,8 @@ function init() {
         ScrollTrigger.refresh();
         const tween = gsap.to(track, { x: -distance, ease: "horScroll",
           scrollTrigger: { trigger: area, start: "2.5% top", end: "97.5% bottom", scrub: 0.25, invalidateOnRefresh: true } });
+        /* the "keep scrolling" hint leaves once the track is moving */
+        ScrollTrigger.create({ trigger: area, start: "8% top", onToggle: (st) => $(".pf-hint").classList.toggle("gone", st.isActive || st.progress > 0) });
         /* the path draws as you travel along it: geometry scrubs */
         gsap.fromTo(".pf-line i", { scaleX: 0 }, { scaleX: 1, ease: "none", scrollTrigger: { trigger: area, start: "10% top", end: "92% bottom", scrub: 0.25 } });
         $$(".ex-track-title .ex-d span").forEach((sp, i) => gsap.to(sp, { x: i % 2 ? -90 : 90, ease: "none",

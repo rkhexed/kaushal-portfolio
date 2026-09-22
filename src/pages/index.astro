@@ -5,7 +5,8 @@ import "../styles/site.css";
 
 const files = import.meta.glob<{ default: ImageMetadata }>("../assets/photos/*.jpg", { eager: true });
 const P: Record<string, ImageMetadata> = Object.fromEntries(Object.entries(files).map(([p, m]) => [p.split("/").pop()!.replace(".jpg", ""), m.default]));
-const full = Object.fromEntries(await Promise.all(roll.map(async ([key]) => [key, (await getImage({ src: P[key], width: 1800, format: "webp" })).src])));
+// gallery hidden for now; restore with the gallery markup below
+// const full = Object.fromEntries(await Promise.all(roll.map(async ([key]) => [key, (await getImage({ src: P[key], width: 1800, format: "webp" })).src])));
 const ambient = (await getImage({ src: P.dumbo, width: 48, format: "webp" })).src;
 
 const mail = `mailto:${K.links.email}`;
@@ -14,6 +15,8 @@ const club = { org: "AI/ML Club", role: "President, Wilfrid Laurier University",
 const track = [[W[3], "now"], ...coops.map((w) => [w, ""]), ["tag"], [club, "lead"], [W[4], "lead"]] as const;
 const notes: Record<string, string> = { keeper: "keeper", blown: "blown out, again", moon: "starburst = f/22?" };
 const ticks = Array.from({ length: 24 }, (_, i) => i);
+/* boarding-pass barcode: bar widths derived from the name, so it is stable across builds */
+const barcode = [...K.fullName.replace(/ /g, "")].flatMap((c) => { const n = c.charCodeAt(0); return [1 + (n % 3), 1 + ((n >> 2) % 3)]; });
 const title = "Kaushal Subramani, AI/ML engineer";
 const description = "AI/ML engineer in Waterloo. I build LLM agents, big or small, virtual or physical, and evaluate them rigorously. Graduating December 2026.";
 const og = new URL("/og.jpg", Astro.site ?? Astro.url).href;
@@ -48,7 +51,7 @@ const og = new URL("/og.jpg", Astro.site ?? Astro.url).href;
         <g fill="currentColor"><polygon opacity=".5" transform="rotate(45 50 50)" points="50,27 53,47 73,50 53,53 50,73 47,53 27,50 47,47" />
         <polygon points="50,15 54.5,45.5 85,50 54.5,54.5 50,85 45.5,54.5 15,50 45.5,45.5" /></g></svg>
     </button>
-    <nav class="ex-nav" aria-label="Sections"><a href="#ex-about">About</a><a href="#ex-work">Work</a><a href="#ex-research">Research</a><a href="#ex-built">Built</a><a href={mail}>Email me</a><span class="pf-bar" aria-hidden="true"></span><a href="#gallery" data-gallery>Gallery</a></nav>
+    <nav class="ex-nav" aria-label="Sections"><a href="#ex-about">About</a><a href="#ex-work">Work</a><a href="#ex-research">Research</a><a href="#ex-built">Built</a><a href={mail}>Email me</a>{/* gallery hidden for now: <span class="pf-bar" aria-hidden="true"></span><a href="#gallery" data-gallery>Gallery</a> */}</nav>
   </header>
   <div class="ex-count" aria-hidden="true"><span class="ex-m ex-count-n">00</span><div class="ex-rail"><i></i></div></div>
 
@@ -66,7 +69,7 @@ const og = new URL("/og.jpg", Astro.site ?? Astro.url).href;
 
     <section class="ex-spread ex-light" data-bg="light"><div class="ex-sticky">
       <p class="ex-d ex-spread-line"><span>Agents, evals</span><span>and edge models</span></p>
-      <p class="ex-spread-sub" data-reveal="ctn">Three co-ops shipping LLM systems, a research lab, and a hackathon platform that 200 people used.</p>
+      <p class="ex-spread-sub" data-reveal="ctn">Three co-ops shipping LLM systems, a research lab, and a hackathon platform that 200+ people used.</p>
     </div></section>
 
     <section class="ex-home" id="ex-about" data-bg="dark"><div class="ex-home-grid">
@@ -79,10 +82,10 @@ const og = new URL("/og.jpg", Astro.site ?? Astro.url).href;
       </div></div></section>
 
     <section class="ex-work ex-light" id="ex-work" data-bg="light"><div class="ex-work-area"><div class="ex-work-screen"><div class="ex-track">
-      <div class="ex-track-title"><h2 class="ex-d"><span>Where I've</span><span>worked</span></h2></div>
+      <div class="ex-track-title"><h2 class="ex-d"><span>Where I've</span><span>worked</span></h2><p class="pf-hint"><i aria-hidden="true"></i>Keep scrolling down. The path moves sideways.</p></div>
       <span class="pf-line" aria-hidden="true"><i></i></span>
       {track.map(([w, kind]) => w === "tag"
-        ? <p class="pf-now-tag ex-m">Projects and leadership I'm proud of</p>
+        ? <div class="pf-divider"><span class="ex-m">Beyond the day job</span><h3 class="ex-d">Projects and leadership I'm proud of</h3></div>
         : <article class={`ex-card ${kind}`} data-card><span class="pf-node" aria-hidden="true"></span>{kind === "now" && <span class="pf-now ex-m">Now</span>}
             <p class="ex-m">{w.when}</p><h3>{w.org}</h3><p class="role">{w.role}</p>
             <div class="ex-metric"><b>{w.metric}</b><span>{w.metricLabel}</span></div>
@@ -118,10 +121,15 @@ const og = new URL("/og.jpg", Astro.site ?? Astro.url).href;
     </div></section>
 
     <section class="pf-sec ex-light" id="ex-built" data-bg="light"><div class="pf-in">
-      <header class="pf-head" data-reveal-w><h2 class="ex-d" data-reveal="h">Built</h2><p data-reveal="ctn">Things I made because I wanted them to exist.</p></header>
-      <div class="pf-built">{K.projects.map((p) =>
-        <article class="pf-proj"><p class="ex-m">{p.tags.join(" · ")}</p><h3>{p.title}</h3><p>{p.body}</p><a href={K.links[p.link]} target="_blank" rel="noopener">{p.linkLabel}</a></article>)}
-        <article class="pf-proj pf-more"><p class="ex-m">Side projects, hackathons, experiments</p><h3>And plenty more</h3><p>Everything else I build lives on my GitHub.</p><a href={K.links.github} target="_blank" rel="noopener">github.com/rkhexed</a></article></div>
+      <header class="pf-head" data-reveal-w><h2 class="ex-d" data-reveal="h">Things I've built</h2><p data-reveal="ctn">Outside co-ops and research: platforms, agents and prototypes.</p></header>
+      <div class="pf-built">
+        <article class="pf-proj pf-feature"><p class="ex-m">Next.js · Supabase · React · Flask</p><h3>[case]HACKS platform</h3>
+          <p>The software a 200+ hacker event ran on: an organizer control plane and a participant portal, open-sourced after the event.</p>
+          <dl class="pf-facts"><div><dt>200+</dt><dd>hackers on the platform</dd></div><div><dt>Live</dt><dd>QR check-in at the door</dd></div><div><dt>Auto</dt><dd>constraint-based team matching</dd></div><div><dt>1-click</dt><dd>sponsor resume exports</dd></div></dl>
+          <a href={K.links.casehacks} target="_blank" rel="noopener">Showcase repo</a></article>
+        <article class="pf-proj pf-more"><p class="ex-m">On GitHub</p><h3>And plenty more</h3>
+          <ul class="pf-more-list"><li>Agent suites and RAG prototypes</li><li>Federated learning experiments</li><li>Full-stack apps and data analysis</li></ul>
+          <a href={K.links.github} target="_blank" rel="noopener">github.com/rkhexed</a></article></div>
     </div></section>
 
     <section class="pf-aurora" data-bg="dark">
@@ -134,7 +142,7 @@ const og = new URL("/og.jpg", Astro.site ?? Astro.url).href;
       <header class="pf-head" data-reveal-w><h2 class="ex-d" data-reveal="h">Off the clock</h2><p data-reveal="ctn">What I do when I'm not training models.</p></header>
       <div class="ex-off-in">
         <div><ul class="ex-hobbies" data-reveal-w>{hobbies.map(([h, j]) => <li data-reveal="ctn"><b>{h}</b><span>{j}</span></li>)}</ul>
-          <a class="pf-gal-link" href="#gallery" data-gallery>See the photo roll</a></div>
+          {/* gallery hidden for now: <a class="pf-gal-link" href="#gallery" data-gallery>See the photo roll</a> */}</div>
         <div class="ex-stack">
           <figure class="ex-frame t"><Image data-parallax="img" src={P.timesSq} widths={[400, 800]} sizes="(min-width: 992px) 17vw, 50vw" alt="Times Square at night, crowded and lit up" /></figure>
           <figure class="ex-frame t"><Image data-parallax="img" src={P.ubcBear} widths={[400, 800]} sizes="(min-width: 992px) 17vw, 50vw" alt="Kaushal grinning with a UBC teddy bear" /></figure>
@@ -150,15 +158,32 @@ const og = new URL("/og.jpg", Astro.site ?? Astro.url).href;
     </div></section>
   </main>
   <div class="ex-spacer" data-bg="dark" aria-hidden="true"></div>
-  <footer class="ex-foot"><div class="pf-foot-in"><div class="ex-pass">
+  <footer class="ex-foot"><div class="pf-foot-in"><div class="ex-pass pf-pass">
     <div class="ex-pass-main">
-      <div class="route"><span class="ex-d">KKS</span><i></i><span class="ex-d">YOU</span></div>
-      <div class="ex-pass-row"><div><p class="lbl">PASSENGER</p><div class="v">{K.fullName}</div></div><div><p class="lbl">FLIGHT</p><div class="v">AI/ML engineer</div></div><div><p class="lbl">BOARDING</p><div class="v">Graduating Dec 2026</div></div></div>
+      <div class="pf-pass-top"><span>Boarding pass</span><span>Class: full-time &amp; internships</span></div>
+      <div class="route">
+        <div class="pt"><span class="ex-d">KKS</span><small>Kaushal Kumar Subramani<br />Waterloo, ON</small></div>
+        <i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z" transform="rotate(90 12 12)"/></svg></i>
+        <div class="pt to"><span class="ex-d">YOU</span><small>Your team<br />Wherever you build</small></div>
+      </div>
+      <div class="ex-pass-row">
+        <div><p class="lbl">Passenger</p><div class="v">{K.fullName}</div></div>
+        <div><p class="lbl">Flight</p><div class="v">AI/ML engineer</div></div>
+        <div><p class="lbl">Graduating</p><div class="v">December 2026</div></div>
+        <div><p class="lbl">Seeking</p><div class="v">Full-time roles and internships</div></div>
+        <div class="wide"><p class="lbl">Carry-on</p><div class="v">Python, PyTorch, LangGraph, LangSmith, RAG, Docker, GCP</div></div>
+      </div>
       <p class="ex-pass-note">Every photo on this page is from my own trips, and there are so many more places I hope to see.</p>
     </div>
-    <div class="ex-pass-stub"><div class="ex-pass-links"><a href={mail}>Email me</a><a href={K.links.github} target="_blank" rel="noopener">GitHub</a><a href={K.links.linkedin} target="_blank" rel="noopener">LinkedIn</a><a href={K.links.resume} target="_blank" rel="noopener">Resume (PDF)</a></div><span class="ex-m">WATERLOO, ON</span></div>
-  </div><a class="pf-foot-gal" href="#gallery" data-gallery>Photo roll, 2026</a></div></footer>
+    <div class="ex-pass-stub">
+      <div class="pf-stub-top">Contact</div>
+      <div class="ex-pass-links"><a href={mail}>Email</a><a href={K.links.linkedin} target="_blank" rel="noopener">LinkedIn</a><a href={K.links.github} target="_blank" rel="noopener">GitHub</a><a href={K.links.resume} target="_blank" rel="noopener">Resume (PDF)</a></div>
+      <div class="pf-barcode" aria-hidden="true">{barcode.map((w) => <i style={`--w:${w}px`}></i>)}</div>
+      <span class="ex-m">KKS-2026 · WATERLOO, ON</span>
+    </div>
+  </div>{/* gallery hidden for now: <a class="pf-foot-gal" href="#gallery" data-gallery>Photo roll, 2026</a> */}</div></footer>
 
+  {/* gallery hidden for now (contact-sheet photo roll). To restore: uncomment this block, the nav/off-the-clock/footer links, `full` above, and gallery() in site.js.
   <div class="pf-gallery" hidden>
     <div class="cs pf-gal-in">
       <a class="pf-back" href="#top" data-back>Back to portfolio</a>
@@ -176,6 +201,7 @@ const og = new URL("/og.jpg", Astro.site ?? Astro.url).href;
           <div class="cs-tray-copy"><p class="cs-mono" data-t="where"></p><h2 data-t="title"></h2><p data-t="story"></p><button class="cs-close" type="button">Back to the sheet</button></div></div></div>
     </div>
   </div>
+  */}
 </div>
 <script src="../scripts/site.js"></script>
 </body>
