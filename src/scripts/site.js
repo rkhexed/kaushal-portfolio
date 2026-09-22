@@ -76,7 +76,9 @@ function init() {
         else if (kind === "p") gsap.to(n._p, show ? { ...d, yPercent: 0, stagger: 0.08 } : { ...d, yPercent: -110, stagger: 0.03 });
         else if (kind === "ctn") gsap.to(n, show ? { ...d, opacity: 1, y: 0 } : { ...d, opacity: 0 });
       };
-      document.fonts.ready.then(() => {
+      /* phones skip the typeset intro, so they need not wait for web fonts before the arch opens */
+      const small = innerWidth < 992;
+      (small ? Promise.resolve() : document.fonts.ready).then(() => {
         if (!el.isConnected) return;
         const all = $$("main [data-reveal]"); all.forEach(prep);
         const groups = new Map();
@@ -85,8 +87,9 @@ function init() {
           onEnter: () => items.forEach((n, i) => act(n, true, i * 0.08)),
           onLeaveBack: () => items.forEach((n) => act(n, false)) }));
 
-        /* loader logo assembles once per session */
-        const seen = sessionStorage.getItem("ex-seen") === "1";
+        /* loader logo assembles once per session; phones get the short version (no dive follows there) */
+        const seen = small || sessionStorage.getItem("ex-seen") === "1";
+        const D = small ? { open: 1, hold: 0.15, dive: 0.9 } : { open: 1.8, hold: 0.6, dive: 1.7 };
         const loader = $(".ex-loader"), heroImg = $(".ex-hero-bg img");
         lenis && lenis.stop();
         const tl = gsap.timeline({ onComplete() { loader.style.display = "none"; lenis && lenis.start(); try { sessionStorage.setItem("ex-seen", "1"); } catch (e) {} } });
@@ -100,10 +103,10 @@ function init() {
             .to(pct, { v: 99, duration: 2.2, ease: "loadBar", onUpdate() { pctEl.textContent = String(Math.round(pct.v)).padStart(2, "0"); } }, 0.2);
         }
         /* the arch opens slowly, holds so the bridge reads through it, then the camera passes through */
-        tl.to(".ex-loader-logo, .ex-loader-bar, .ex-loader-pct", { opacity: 0, duration: 0.4, ease: "In" }, seen ? 0 : ">-0.05")
-          .to(loader, { "--aw": "34vw", "--ay": "20vh", duration: 1.8, ease: "InOut" }, "<")
-          .to(loader, { "--aw": "180vw", "--ay": "-80vh", duration: 1.7, ease: "diveIn" }, "+=0.6")
-          .to(heroImg, { scale: 1, duration: 1.7, ease: "diveIn" }, "<");
+        tl.to(".ex-loader-logo, .ex-loader-bar, .ex-loader-pct", { opacity: 0, duration: small ? 0.2 : 0.4, ease: "In" }, seen ? 0 : ">-0.05")
+          .to(loader, { "--aw": small ? "58vw" : "34vw", "--ay": "20vh", duration: D.open, ease: "InOut" }, "<")
+          .to(loader, { "--aw": "180vw", "--ay": "-80vh", duration: D.dive, ease: "diveIn" }, `+=${D.hold}`)
+          .to(heroImg, { scale: 1, duration: D.dive, ease: "diveIn" }, "<");
       });
 
       /* ---------- compass: idles at 30°/s, follows scroll velocity, settles back ---------- */

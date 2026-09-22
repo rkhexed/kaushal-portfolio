@@ -33,6 +33,7 @@ const og = new URL("/og.jpg", Astro.site ?? Astro.url).href;
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="theme-color" content="#0e141b" />
+  <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site ?? Astro.url).href} />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
