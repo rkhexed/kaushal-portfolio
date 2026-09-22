@@ -56,7 +56,7 @@ export const hobbies = [
   ["Badminton", "I play often and lose gracefully."],
   ["Bouldering", "Currently dreaming of getting halfway up a V3."],
   ["Drone flying", "A DJI Mini 3, a birthday gift I fly every chance I get."],
-  ["Photography", "Learning on a Canon Rebel T6i, one blown highlight at a time."],
+  ["Photography", "Learning on a Canon Rebel T6i. Every shot looked better in my head."],
   ["Video games", "Pok\u00e9mon Emerald, Horizon Zero Dawn, Expedition 33, God of War."]
 ];
 
