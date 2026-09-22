@@ -466,3 +466,16 @@ img { max-width: 100%; }
 }
 .pf .ex-track-title .pf-hint { color: var(--sig); max-width: none; font-size: 14px; }
 .pf-hint i { height: 72px; }
+
+/* copy-the-address control, for visitors whose machine has no mail client wired up */
+.pf-mailrow { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; margin: 0; }
+.pf-copy { appearance: none; cursor: pointer; background: transparent; color: inherit; font: 600 14px/1 "Hanken Grotesk", ui-sans-serif, sans-serif;
+  border: 1.5px solid currentColor; border-radius: 999px; padding: 11px 16px; transition: background .16s, color .16s, border-color .16s; }
+.pf-copy:hover { background: var(--snow); color: var(--ink); border-color: var(--snow); }
+.pf-copy.done { background: var(--glow); border-color: var(--glow); color: var(--ink); }
+.pf-copy.stub { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 9px 0; border: 0; border-bottom: 1px solid rgba(14,20,27,.12);
+  border-radius: 0; font-size: 15px; font-weight: 650; color: var(--ink); text-align: left; }
+.pf-copy.stub::after { content: "\29C9"; color: var(--sig); font-size: 13px; }
+.pf-copy.stub:hover { background: transparent; color: var(--sig); }
+.pf-copy.stub.done { background: transparent; border-color: rgba(14,20,27,.12); color: var(--sig); }
+.pf-copy.stub.done::after { content: "\2713"; }

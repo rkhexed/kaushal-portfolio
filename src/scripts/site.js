@@ -52,6 +52,19 @@ function init() {
     $$(".ex-nav a[href^='#ex'], [data-jump]").forEach((a) => on(a, "click", (e) => { e.preventDefault(); jump(a.getAttribute("href")); }));
     on($(".ex-mark"), "click", () => jump("#top"));
 
+    /* copy-to-clipboard for the email: mailto: does nothing on machines with no mail client set up */
+    $$("[data-copy]").forEach((btn) => on(btn, "click", async () => {
+      const text = btn.dataset.copy;
+      try {
+        if (navigator.clipboard) await navigator.clipboard.writeText(text);
+        else { const t = document.createElement("textarea"); t.value = text; t.style.position = "fixed"; t.style.opacity = "0";
+          document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove(); }
+        const was = btn.textContent;
+        btn.textContent = "Copied"; btn.classList.add("done");
+        clearTimeout(btn._t); btn._t = setTimeout(() => { btn.textContent = was; btn.classList.remove("done"); }, 2000);
+      } catch (e) { location.href = "mailto:" + text; }
+    }));
+
     offs.push(demoRRT($(".pf-rrt"), $('[data-rr="n"]'), $('[data-rr="p"]')));
     offs.push(demoSwarm(el));
     offs.push(demoMail(el, emails));

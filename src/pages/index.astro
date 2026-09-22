@@ -174,7 +174,8 @@ const person = {
       <div class="ex-end-copy" data-reveal-w><h2 class="ex-d pf-hire" data-reveal="ctn">Hiring <span class="pf-role">{roles[0]}</span><i class="pf-caret" aria-hidden="true"></i></h2>
         <div class="pf-meter" aria-hidden="true"><span class="ex-m" data-rc>01 / 0{roles.length}</span>{roles.map(() => <i><b></b></i>)}</div>
         <p class="pf-end-sub" data-reveal="p">I graduate in December 2026 and I'm looking for full-time roles and internships.</p>
-        <a class="ex-email" href={mail} data-reveal="ctn">{K.links.email}</a></div>
+        <p class="pf-mailrow" data-reveal="ctn"><a class="ex-email" href={mail}>{K.links.email}</a>
+          <button class="pf-copy" type="button" data-copy={K.links.email} aria-live="polite">Copy</button></p></div>
     </div></section>
   </main>
   <div class="ex-spacer" data-bg="dark" aria-hidden="true"></div>
@@ -197,7 +198,7 @@ const person = {
     </div>
     <div class="ex-pass-stub">
       <div class="pf-stub-top">Contact</div>
-      <div class="ex-pass-links"><a href={mail}>Email</a><a href={K.links.linkedin} target="_blank" rel="noopener">LinkedIn</a><a href={K.links.github} target="_blank" rel="noopener">GitHub</a><a href={K.links.resume} target="_blank" rel="noopener">Resume (PDF)</a></div>
+      <div class="ex-pass-links"><a href={mail}>Email</a><button class="pf-copy stub" type="button" data-copy={K.links.email} aria-live="polite">Copy address</button><a href={K.links.linkedin} target="_blank" rel="noopener">LinkedIn</a><a href={K.links.github} target="_blank" rel="noopener">GitHub</a><a href={K.links.resume} target="_blank" rel="noopener">Resume (PDF)</a></div>
       <div class="pf-barcode" aria-hidden="true">{barcode.map((w) => <i style={`--w:${w}px`}></i>)}</div>
       <span class="ex-m">KKS-2026 · WATERLOO, ON</span>
     </div>
