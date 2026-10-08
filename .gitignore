@@ -6,6 +6,7 @@ dist/
 # raw photos (originals, full EXIF) and working files stay local
 portfoliositephotos/
 design-demos/
+demo-video/
 # older resume copies; the published one is public/Kaushal-Subramani-Resume.pdf (no phone number)
 *.pdf
 !public/Kaushal-Subramani-Resume.pdf

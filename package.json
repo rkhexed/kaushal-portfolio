@@ -1,7 +1,19 @@
 {
   "name": "kaushal-portfolio",
+  "version": "1.0.0",
+  "description": "Personal site for Kaushal Subramani: Astro, GSAP and Lenis, with three research demos running live on canvas.",
+  "homepage": "https://kaushalks.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rkhexed/kaushal-portfolio"
+  },
+  "author": "Kaushal Subramani",
+  "license": "UNLICENSED",
   "type": "module",
   "private": true,
+  "engines": {
+    "node": ">=20 <22"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
