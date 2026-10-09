@@ -1,6 +1,8 @@
 # kaushal-portfolio
 
-Single-page static site: Astro 5 (Node 20; Astro 7 needs Node 22), GSAP 3.15 (ScrollTrigger, SplitText, CustomEase), Lenis. Deployed on Vercel from `main`.
+Single-page static site: Astro 5, GSAP 3.15 (ScrollTrigger, SplitText, CustomEase), Lenis. Deployed on Vercel from `main`.
+
+- Node: 20 locally, 24 on Vercel. No `engines` field in package.json; Vercel rejects a range and no longer accepts Node 20, and either one fails the deploy silently from GitHub's side.
 
 - `src/pages/index.astro`: all markup, rendered at build time. `src/data/site.js`: all copy (from the resume only; no invented metrics).
 - `src/scripts/site.js`: scroll choreography, the three research demos (drone swarm, anytime RRT*, multi-agent phishing), the pinned hiring section and the gallery overlay.

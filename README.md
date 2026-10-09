@@ -69,7 +69,9 @@ npm run build    # static output in dist/
 npm run preview  # serve the build
 ```
 
-Node 20. Astro 7 would need Node 22.
+Builds on Node 20 locally and on Node 24 on Vercel. Do not add an `engines` field: Vercel
+rejects a semver range, and it no longer accepts Node 20, so pinning either one fails every
+deployment.
 
 ## Deployment and headers
 
