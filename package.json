@@ -11,9 +11,6 @@
   "license": "UNLICENSED",
   "type": "module",
   "private": true,
-  "engines": {
-    "node": "20.x"
-  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
