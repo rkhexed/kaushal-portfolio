@@ -52,10 +52,11 @@ function init() {
     const durS = 0.4, durL = 1.2;
 
     const jump = (href) => {
-      const t = href === "#top" ? 0 : el.querySelector(href);
-      if (lenis) lenis.scrollTo(t, { duration: 1.6 }); else if (t === 0) scrollTo(0, 0); else t.scrollIntoView();
+      /* "#contact" means the very bottom, where the page has finished folding into the boarding pass */
+      const t = href === "#top" ? 0 : href === "#contact" ? document.documentElement.scrollHeight - innerHeight : el.querySelector(href);
+      if (lenis) lenis.scrollTo(t, { duration: 1.6 }); else if (typeof t === "number") scrollTo(0, t); else t.scrollIntoView();
     };
-    $$(".ex-nav a[href^='#ex'], [data-jump]").forEach((a) => on(a, "click", (e) => { e.preventDefault(); jump(a.getAttribute("href")); }));
+    $$(".ex-nav a[href^='#'], [data-jump]").forEach((a) => on(a, "click", (e) => { e.preventDefault(); jump(a.getAttribute("href")); }));
     on($(".ex-mark"), "click", () => jump("#top"));
 
     /* copy-to-clipboard for the email: mailto: does nothing on machines with no mail client set up */
