@@ -13,7 +13,8 @@ export const K = {
     linkedin: "https://www.linkedin.com/in/kaushal-subramani-040a22224/",
     paper: "https://ieeexplore.ieee.org/abstract/document/11592564",
     planner: "https://github.com/rkhexed/SPIN---quadhrrt_nav",
-    casehacks: "https://github.com/ShayanDhillon/CaseHacks-Showcase",
+    casehacks: "https://github.com/rkhexed/CaseHacks-Showcase",
+    emerald: "https://github.com/rkhexed/RL-Emerald",
     resume: "/Kaushal-Subramani-Resume.pdf"
   },
   work: [

@@ -9,6 +9,20 @@ const P: Record<string, ImageMetadata> = Object.fromEntries(Object.entries(files
 // const full = Object.fromEntries(await Promise.all(roll.map(async ([key]) => [key, (await getImage({ src: P[key], width: 1800, format: "webp" })).src])));
 const ambient = (await getImage({ src: P.dumbo, width: 48, format: "webp" })).src;
 
+/* [case]HACKS product screenshots, in the order they step through */
+const shotFiles = import.meta.glob<{ default: ImageMetadata }>("../assets/shots/*.png", { eager: true });
+const S: Record<string, ImageMetadata> = Object.fromEntries(Object.entries(shotFiles).map(([p, m]) => [p.split("/").pop()!.replace(".png", ""), m.default]));
+const shots = [
+  ["admin", "ch-admin-overview", "Overview"],
+  ["admin", "ch-admin-applicants", "Applicants"],
+  ["admin", "ch-admin-teams", "Teams"],
+  ["admin", "ch-admin-leaderboard", "Leaderboard and bounties"],
+  ["hacker", "ch-hacker-dashboard", "Dashboard and QR code"],
+  ["hacker", "ch-hacker-schedule", "Schedule"],
+  ["hacker", "ch-hacker-team", "Team workspace"],
+  ["hacker", "ch-hacker-leaderboard", "Leaderboard and bounties"],
+] as const;
+
 const mail = `mailto:${K.links.email}`;
 const W = K.work, coops = [W[0], W[1], W[2]];
 const club = { org: "AI/ML Club", role: "President, Wilfrid Laurier University", when: K.club.when, metric: "1st", metricLabel: "AI/ML club at Laurier backed by AI faculty", body: K.club.body, tags: ["Workshops", "Research groups", "Hackathons"] };
@@ -56,7 +70,7 @@ const person = {
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Geist+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wdth,wght@75..100,400..800&family=Hanken+Grotesk:wght@400..700&family=Geist+Mono:wght@400;500&display=swap" />
 </head>
 <body>
 <div class="ex pf">
@@ -142,15 +156,83 @@ const person = {
     </div></section>
 
     <section class="pf-sec ex-light" id="ex-built" data-bg="light"><div class="pf-in">
-      <header class="pf-head" data-reveal-w><h2 class="ex-d" data-reveal="h">Things I've built</h2><p data-reveal="ctn">Outside co-ops and research: platforms, agents and prototypes.</p></header>
-      <div class="pf-built">
-        <article class="pf-proj pf-feature"><p class="ex-m">Next.js · Supabase · React · Flask</p><h3>[case]HACKS platform</h3>
-          <p>The software a 200+ hacker event ran on: an organizer control plane and a participant portal, open-sourced after the event.</p>
-          <dl class="pf-facts"><div><dt>200+</dt><dd>hackers on the platform</dd></div><div><dt>Live</dt><dd>QR check-in at the door</dd></div><div><dt>Auto</dt><dd>constraint-based team matching</dd></div><div><dt>1-click</dt><dd>sponsor resume exports</dd></div></dl>
-          <a href={K.links.casehacks} target="_blank" rel="noopener">Showcase repo</a></article>
-        <article class="pf-proj pf-more"><p class="ex-m">On GitHub</p><h3>And plenty more</h3>
+      <header class="pf-head" data-reveal-w><h2 class="ex-d" data-reveal="h">Things I've built</h2><p data-reveal="ctn">Outside co-ops and research: platforms, agents and prototypes. Both of these are running below.</p></header>
+
+      <article class="pf-project" data-reveal-w>
+        <div class="pf-project-copy">
+          <p class="ex-m">PPO · Stable-Baselines3 · PyTorch · mGBA · Python</p>
+          <h3 data-reveal="h">Agents that learn to play Pokémon Emerald <span class="pf-wip">Training now</span></h3>
+          <p data-reveal="ctn">A Gymnasium environment wrapped around the mGBA emulator. A multi-input PPO policy reads the screen alongside game state pulled straight from emulator RAM, using the pokeemerald decompilation's memory map, and 24 games run in parallel at up to 900 decisions a second. Episodes run 20,480 steps. The best run so far has played from Birch's lab through Oldale, Petalburg and the Woods and into the Rustboro gym, 15 of its 16 milestones, with the badge still to win.</p>
+          <dl class="pf-facts" data-reveal="ctn">
+            <div><dt>24</dt><dd>games training in parallel</dd></div>
+            <div><dt>48M</dt><dd>steps in the longest run so far</dd></div>
+            <div><dt>900/s</dt><dd>decisions across all 24 games</dd></div>
+          </dl>
+          <a href={K.links.emerald} target="_blank" rel="noopener">Code on GitHub</a>
+        </div>
+        <figure class="pf-demo-panel" data-demo="video">
+          <div class="pf-switch" role="tablist" aria-label="Choose a view">
+            <button type="button" role="tab" aria-selected="true" data-view="swarm">Swarm</button>
+            <button type="button" role="tab" aria-selected="false" data-view="agent">One agent</button>
+          </div>
+          <div class="pf-stage">
+            <video data-view="swarm" poster="/demos/emerald-swarm.jpg" muted loop playsinline preload="none"
+              aria-label="The Hoenn map zooming out from one agent to dozens of agents exploring at once" data-src="/demos/emerald-swarm.mp4"></video>
+            <video data-view="agent" poster="/demos/emerald-agent.jpg" muted loop playsinline preload="none" hidden
+              aria-label="A single agent walking through tall grass in Pokémon Emerald" data-src="/demos/emerald-agent.mp4"></video>
+            <button class="pf-stage-play" type="button" hidden>Play</button>
+          </div>
+          <figcaption class="pf-stage-cap">
+            <span data-cap="swarm">Twenty-four games at once. The camera pulls back from one agent in Littleroot to the whole map, with the parallel runs spread across it.</span>
+            <span data-cap="agent" hidden>One game, close up, at the speed the emulator actually runs it.</span>
+          </figcaption>
+        </figure>
+      </article>
+
+      <article class="pf-project pf-flip" data-reveal-w>
+        <div class="pf-project-copy">
+          <p class="ex-m">Next.js · Supabase · React · Flask</p>
+          <h3 data-reveal="h">[case]HACKS platform</h3>
+          <p data-reveal="ctn">The software a 200+ hacker event ran on: an organizer control plane and a participant portal, built with Shayan Dhillon and open-sourced after the event.</p>
+          <dl class="pf-facts" data-reveal="ctn">
+            <div><dt>200+</dt><dd>hackers on the platform</dd></div>
+            <div><dt>Live</dt><dd>QR check-in at the door</dd></div>
+            <div><dt>Auto</dt><dd>constraint-based team matching</dd></div>
+          </dl>
+          <a href={K.links.casehacks} target="_blank" rel="noopener">Showcase repo</a>
+        </div>
+        <figure class="pf-demo-panel" data-demo="shots">
+          <div class="pf-switch" role="tablist" aria-label="Choose a product">
+            <button type="button" role="tab" aria-selected="true" data-view="admin">Organizer dashboard</button>
+            <button type="button" role="tab" aria-selected="false" data-view="hacker">Hacker portal</button>
+          </div>
+          <div class="pf-stage pf-stage-shots">
+            {shots.map(([view, key, label], i) => (
+              <Image class={`pf-shot${i === 0 ? " on" : ""}`} data-view={view} data-label={label} src={S[key]} widths={[900, 1500]} sizes="(min-width: 992px) 56vw, 100vw" loading="lazy" alt={`[case]HACKS ${view === "admin" ? "organizer dashboard" : "hacker portal"}: ${label}`} />
+            ))}
+          </div>
+          <figcaption class="pf-stage-cap pf-shot-cap">
+            <span data-shot-label>Overview</span>
+            <span class="pf-dots" role="tablist" aria-label="Choose a screen"></span>
+          </figcaption>
+        </figure>
+      </article>
+
+      <article class="pf-more-card" data-reveal-w>
+        <div class="pf-more-copy">
+          <p class="ex-m">On GitHub</p>
+          <h3 data-reveal="h">And plenty more</h3>
           <ul class="pf-more-list"><li>Agent suites and RAG prototypes</li><li>Federated learning experiments</li><li>Full-stack apps and data analysis</li></ul>
-          <a href={K.links.github} target="_blank" rel="noopener">github.com/rkhexed</a></article></div>
+          <a class="pf-more-link" href={K.links.github} target="_blank" rel="noopener">github.com/rkhexed</a>
+        </div>
+        <div class="pf-more-art">
+          <Image src={S["github-heatmap"]} widths={[800, 1400]} sizes="(min-width: 992px) 52vw, 100vw" loading="lazy" alt="A contribution heatmap whose filled squares spell out KKS" />
+          <a class="pf-qr" href={K.links.github} target="_blank" rel="noopener">
+            <img src="/github-qr.svg" alt="" width="104" height="104" loading="lazy" />
+            <span>Scan for<br />my GitHub</span>
+          </a>
+        </div>
+      </article>
     </div></section>
 
     <section class="pf-aurora" data-bg="dark">

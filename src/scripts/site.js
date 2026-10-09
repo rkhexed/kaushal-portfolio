@@ -10,8 +10,10 @@ import { RM } from "./reduced-motion.js";
 import { demoRRT } from "./demos/rrt.js";
 import { demoSwarm } from "./demos/swarm.js";
 import { demoMail } from "./demos/phishing.js";
+import { videoDemo, shotsDemo } from "./projects.js";
 
 gsap.registerPlugin(ScrollTrigger, SplitText, CustomEase);
+ScrollTrigger.config({ ignoreMobileResize: true });
 CustomEase.create("InOut", "0.75,0,0.25,1");
 CustomEase.create("Out", "0.25,1,0.5,1");
 CustomEase.create("In", "0.5,0,0.75,0");
@@ -72,6 +74,8 @@ function init() {
     offs.push(demoRRT($(".pf-rrt"), $('[data-rr="n"]'), $('[data-rr="p"]')));
     offs.push(demoSwarm(el));
     offs.push(demoMail(el, emails));
+    offs.push(videoDemo($('[data-demo="video"]')));
+    offs.push(shotsDemo($('[data-demo="shots"]')));
     /* the photo-roll gallery is built but not mounted: see ./gallery.js and the commented markup in index.astro */
 
     if (RM) { $(".ex-loader").remove(); return () => { offs.forEach((f) => f()); lenis && lenis.destroy(); }; }
@@ -80,6 +84,7 @@ function init() {
     const ctx = gsap.context(() => {
       /* ---------- reveal primitives: reveal / hide (mirrored) ---------- */
       const prep = (n) => {
+        if (n._shown) return;   /* already revealed: a late prep would hide it again */
         const kind = n.dataset.reveal;
         if (kind === "h") SplitText.create(n, { type: "words,chars", autoSplit: true, onSplit(s) { n._p = s.chars; gsap.set(s.chars, n._shown ? { opacity: 1, yPercent: 0, rotateY: 0 } : { opacity: 0, yPercent: 50, rotateY: 90 }); } });
         else if (kind === "p") SplitText.create(n, { type: "lines", mask: "lines", autoSplit: true, onSplit(s) { n._p = s.lines; gsap.set(s.lines, { yPercent: n._shown ? 0 : 110 }); } });
@@ -96,11 +101,20 @@ function init() {
       const small = innerWidth < 992;
       (small ? Promise.resolve() : document.fonts.ready).then(() => {
         if (!el.isConnected) return;
-        const all = $$("main [data-reveal]"); all.forEach(prep);
+        /* splitting every heading at once costs a third of a second on load, so only the
+           first screens are prepared now and the rest wait for an idle moment */
+        const all = $$("main [data-reveal]");
+        const near = (n) => n.getBoundingClientRect().top < innerHeight * 2;
+        all.filter(near).forEach(prep);
+        const rest = all.filter((n) => !near(n));
+        const idle = window.requestIdleCallback || ((f) => setTimeout(f, 200));
+        const prepRest = () => { rest.forEach(prep); ScrollTrigger.refresh(); };
+        if (rest.length) idle(prepRest, { timeout: 2000 });
+
         const groups = new Map();
         all.forEach((n) => { const w = n.closest("[data-reveal-w]") || n; if (!groups.has(w)) groups.set(w, []); groups.get(w).push(n); });
         groups.forEach((items, w) => ScrollTrigger.create({ trigger: w, start: "top 82%",
-          onEnter: () => items.forEach((n, i) => act(n, true, i * 0.08)),
+          onEnter: () => items.forEach((n, i) => { if (!n._p && n.dataset.reveal !== "ctn") prep(n); act(n, true, i * 0.08); }),
           onLeaveBack: () => items.forEach((n) => act(n, false)) }));
 
         /* loader logo assembles once per session; phones get the short version (no dive follows there) */

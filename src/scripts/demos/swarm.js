@@ -1,12 +1,13 @@
 /* A small quadrotor swarm: four drones to four pads, projected in 3D onto a 2D canvas.
    Repulsion plus a tangential push, so they slide around the pillars instead of stalling. */
 import { RM } from "../reduced-motion.js";
+import { throttled } from "../frame-budget.js";
 
 export function demoSwarm(root) {
   const cv = root.querySelector(".pf-swarm"), g = cv.getContext("2d"), read = root.querySelector("[data-sw]"), A = 4;
   const obsDef = [[-1.3, 0.5, 1.4, 0, 0.55, 0, 0.36, 1.9], [1.2, -0.9, 0, 1.6, 0.42, 1.7, 0.34, 1.5], [0.3, 2.0, 1.7, 0.3, 0.5, 3.1, 0.3, 2.3], [-0.4, -2.2, 1.2, 0.5, 0.38, 4.4, 0.3, 1.7]];
   const pads = [[-3.3, -3.3], [3.3, 3.3], [-3.3, 3.3], [3.3, -3.3]];
-  let W = 0, H = 0, S = 1, t = 0, yaw = 0.7, N = 4, drones = [], reached = 0, hits = 0, raf = 0, vis = false, last = 0;
+  let W = 0, H = 0, S = 1, t = 0, yaw = 0.7, N = 4, drones = [], reached = 0, hits = 0, vis = false;
   const P = 0.6, sP = Math.sin(P), cP = Math.cos(P), rnd = (a, b) => a + Math.random() * (b - a);
   const obs = () => obsDef.map(([cx, cy, ax, ay, w, ph, r, h]) => ({ x: cx + ax * Math.sin(t * w + ph), y: cy + ay * Math.cos(t * w + ph), r, h }));
   const goal = () => { const o = obs(); for (let i = 0; i < 60; i++) { const q = [rnd(-A + 0.6, A - 0.6), rnd(-A + 0.6, A - 0.6)]; if (o.every((b) => Math.hypot(q[0] - b.x, q[1] - b.y) > b.r + 1)) return q; } return [0, 0]; };
@@ -69,12 +70,12 @@ export function demoSwarm(root) {
     }
     read.textContent = `${N} drone${N > 1 ? "s" : ""} · ${reached} goals reached · ${hits} collisions`;
   };
-  const frame = (now) => { const dt = Math.min(0.05, (now - (last || now)) / 1000); last = now; step(dt); draw(); raf = vis ? requestAnimationFrame(frame) : 0; };
+  const engine = throttled(() => { step(1 / 30); draw(); });
   const onClick = (e) => { const b = e.target.closest("[data-n]"); if (b) { setN(+b.dataset.n); if (RM) draw(); } };
   root.querySelector(".pf-seg").addEventListener("click", onClick);
   const onResize = () => { size(); draw(); }; addEventListener("resize", onResize);
   setN(4);
-  const io = new IntersectionObserver(([e]) => { vis = e.isIntersecting; if (vis && !raf && !RM) { last = 0; raf = requestAnimationFrame(frame); } });
+  const io = new IntersectionObserver(([e]) => { vis = e.isIntersecting; if (vis && !RM) engine.start(); else engine.stop(); });
   document.fonts.ready.then(() => { size(); if (RM) { for (let i = 0; i < 120; i++) step(1 / 30); } draw(); io.observe(cv); });
-  return () => { cancelAnimationFrame(raf); io.disconnect(); removeEventListener("resize", onResize); };
+  return () => { engine.dispose(); io.disconnect(); removeEventListener("resize", onResize); };
 }

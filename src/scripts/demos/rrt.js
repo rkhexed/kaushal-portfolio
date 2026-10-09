@@ -1,11 +1,12 @@
 /* Anytime RRT*, the planner from the Nav2 research, drawn on a 2D canvas.
    Grows a tree, rewires it as it samples, and costs edges near the person 4x so routes give them room. */
 import { RM } from "../reduced-motion.js";
+import { throttled } from "../frame-budget.js";
 
 export function demoRRT(cv, nEl, pEl) {
-  const g = cv.getContext("2d"), MAX = 1500, STEP = 18, NEAR = 42;
+  const g = cv.getContext("2d"), MAX = 1100, STEP = 18, NEAR = 42;
   const walls = [[0.3, 0, 0.35, 0.58], [0.62, 0.42, 0.67, 1]], person = [0.48, 0.74];
-  let w = 0, h = 0, obst = [], ppl = [], start, goal, X, Y, P, C, n = 0, best = null, raf = 0, fr = 0, vis = false;
+  let w = 0, h = 0, obst = [], ppl = [], start, goal, X, Y, P, C, n = 0, best = null, fr = 0, vis = false;
   const size = () => {
     const d = Math.min(devicePixelRatio, 2); w = cv.clientWidth; h = cv.clientHeight; cv.width = w * d; cv.height = h * d; g.setTransform(d, 0, 0, d, 0, 0);
     obst = walls.map(([a, b, c, e]) => [a * w, b * h, c * w, e * h]); ppl = [[person[0] * w, person[1] * h]];
@@ -50,11 +51,11 @@ export function demoRRT(cv, nEl, pEl) {
     nEl.textContent = "nodes " + n.toLocaleString("en-US");
     pEl.textContent = best ? ((best.len / Math.hypot(goal[0] - start[0], goal[1] - start[1]) - 1) * 100).toFixed(1) + "% over straight line" : "searching";
   };
-  const frame = () => { grow(14); if (++fr % 5 === 0 || !best) connect(); draw(); raf = n < MAX && vis ? requestAnimationFrame(frame) : 0; };
-  const run = () => { cancelAnimationFrame(raf); if (RM) { grow(MAX); connect(); draw(); } else raf = requestAnimationFrame(frame); };
+  const engine = throttled(() => { grow(10); if (++fr % 5 === 0 || !best) connect(); draw(); if (n >= MAX) engine.stop(); });
+  const run = () => { if (RM) { grow(MAX); connect(); draw(); } else engine.start(); };
   const onClick = (e) => { const b = cv.getBoundingClientRect(), x = e.clientX - b.left, y = e.clientY - b.top; if (hit(x, y)) return; goal = [x, y]; reset(); run(); };
   cv.addEventListener("click", onClick);
-  const io = new IntersectionObserver(([e]) => { vis = e.isIntersecting; if (vis && n < MAX && !raf) run(); });
+  const io = new IntersectionObserver(([e]) => { vis = e.isIntersecting; if (vis && n < MAX) run(); else engine.stop(); });
   document.fonts.ready.then(() => { size(); io.observe(cv); });
-  return () => { cancelAnimationFrame(raf); io.disconnect(); cv.removeEventListener("click", onClick); };
+  return () => { engine.dispose(); io.disconnect(); cv.removeEventListener("click", onClick); };
 }
